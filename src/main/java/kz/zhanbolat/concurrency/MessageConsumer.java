@@ -38,7 +38,7 @@ public class MessageConsumer implements Runnable {
                 isTopicFound = false;
                 storedTopic = topic;
                 try {
-                    TimeUnit.MILLISECONDS.sleep(1);
+                    TimeUnit.MILLISECONDS.sleep(20);
                 } catch (InterruptedException ex) {
                     logger.error(ex);
                 }
