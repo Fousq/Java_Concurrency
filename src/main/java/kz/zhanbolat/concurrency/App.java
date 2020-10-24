@@ -4,11 +4,19 @@
 package kz.zhanbolat.concurrency;
 
 public class App {
-    public String getGreeting() {
-        return "Hello world.";
-    }
-
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        MessageBus messageBus = new MessageBus();
+        PostProducer postProducer = new PostProducer(messageBus);
+        MessageConsumer messageConsumer = new MessageConsumer(messageBus);
+
+        Thread postProducerThread = new Thread(postProducer);
+        Thread postProducerThread2 = new Thread(postProducer);
+        Thread messageConsumerThread = new Thread(messageConsumer);
+        Thread messageConsumerThread2 = new Thread(messageConsumer);
+
+        postProducerThread.start();
+        postProducerThread2.start();
+        messageConsumerThread.start();
+        messageConsumerThread2.start();
     }
 }
