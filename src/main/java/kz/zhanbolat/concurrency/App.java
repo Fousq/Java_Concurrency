@@ -3,12 +3,17 @@
  */
 package kz.zhanbolat.concurrency;
 
-public class App {
-    public String getGreeting() {
-        return "Hello world.";
-    }
+import java.util.ArrayList;
+import java.util.List;
 
+public class App {
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        List<Integer> numbers = new ArrayList<>();
+        Thread adderThread = new Thread(new NumberAdder(numbers));
+        Thread summarizerThread = new Thread(new Summarizer(numbers));
+        Thread squareRooterThread = new Thread(new SquareRooter(numbers));
+        adderThread.start();
+        summarizerThread.start();
+        squareRooterThread.start();
     }
 }
