@@ -6,12 +6,20 @@ package kz.zhanbolat.concurrency;
 public class App {
 
     public static void main(String[] args) {
-        ThreadMap map = new ThreadSafeMap();
+        ThreadMap map = new ThreadConcurrentMap();
         NumberAdder adder = new NumberAdder(map);
         Summarizer summarizer = new Summarizer(map);
-        Thread adderThread = new Thread(adder);
-        Thread summarizerThread = new Thread(summarizer);
+
+        ThreadMap threadSafeMap = new ThreadSafeMap();
+        SyncSummarizer syncSummarizer = new SyncSummarizer(threadSafeMap);
+        SyncNumberAdder syncNumberAdder = new SyncNumberAdder(threadSafeMap);
+
+        Thread adderThread = new Thread(syncNumberAdder);
+        Thread summarizerThread = new Thread(syncSummarizer);
+        Thread summarizerThread2 = new Thread(syncSummarizer);
+
         adderThread.start();
         summarizerThread.start();
+        summarizerThread2.start();
     }
 }

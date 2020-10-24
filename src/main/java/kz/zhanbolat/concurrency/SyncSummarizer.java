@@ -5,18 +5,21 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.TimeUnit;
 
-public class Summarizer implements Runnable {
-    private static final Logger logger = LogManager.getLogger(Summarizer.class);
+public class SyncSummarizer implements Runnable {
+    private static final Logger logger = LogManager.getLogger(SyncSummarizer.class);
     private ThreadMap threadMap;
 
-    public Summarizer(ThreadMap threadMap) {
+    public SyncSummarizer(ThreadMap threadMap) {
         this.threadMap = threadMap;
     }
 
     @Override
     public void run() {
         while (true) {
-            long sum = threadMap.values().stream().reduce(0, Integer::sum);
+            long sum;
+            synchronized (threadMap) {
+                sum = threadMap.values().stream().reduce(0, Integer::sum);
+            }
             logger.info("Summery: " + sum);
             try {
                 TimeUnit.MILLISECONDS.sleep(2);
