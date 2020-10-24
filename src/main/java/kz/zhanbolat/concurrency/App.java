@@ -4,11 +4,14 @@
 package kz.zhanbolat.concurrency;
 
 public class App {
-    public String getGreeting() {
-        return "Hello world.";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        ThreadMap map = new ThreadMap();
+        NumberAdder adder = new NumberAdder(map);
+        Summarizer summarizer = new Summarizer(map);
+        Thread adderThread = new Thread(adder);
+        Thread summarizerThread = new Thread(summarizer);
+        adderThread.start();
+        summarizerThread.start();
     }
 }
