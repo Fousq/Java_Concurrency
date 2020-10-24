@@ -31,3 +31,19 @@ Books:
 <a href="https://www.amazon.com/Java-Concurrency-Practice-Brian-Goetz/dp/0321349601">Java-Concurrency-Practice-Brian-Goetz</a>
 
 <a href="https://www.amazon.com/Art-Multiprocessor-Programming-Revised-Reprint/dp/0123973376">Art-Multiprocessor-Programming</a>
+
+## Task 2
+
+Description
+
+Task 2 - Deadlocks
+
+Cost: 15 points.
+
+Create three threads:
+
+* 1st thread is infinitely writing random number to the collection;
+* 2nd thread is printing sum of the numbers in the collection;
+* 3rd is printing square root of sum of squares of all numbers in the collection.
+
+Make these calculations thread-safe using synchronization block. Fix the possible deadlock.
