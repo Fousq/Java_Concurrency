@@ -31,3 +31,22 @@ Books:
 <a href="https://www.amazon.com/Java-Concurrency-Practice-Brian-Goetz/dp/0321349601">Java-Concurrency-Practice-Brian-Goetz</a>
 
 <a href="https://www.amazon.com/Art-Multiprocessor-Programming-Revised-Reprint/dp/0123973376">Art-Multiprocessor-Programming</a>
+
+## Task 4
+
+Description
+
+Task 4
+
+Cost: 20 points.
+
+Create simple object pool with support for multithreaded environment. No any extra inheritance, polymorphism or generics needed here, just implementation of simple class:
+
+/** * Pool that block when it has not any items or it full */ public class BlockingObjectPool 
+{ /** * Creates filled pool of passed size * * @param size of pool */ 
+public BlockingObjectPool(int size) { ... } /** * Gets object from pool or blocks 
+if pool is empty * * @return object from pool */ public Object get() { ... } /** * 
+Puts object to pool or blocks if pool is full * * @param object to be taken back to pool 
+*/ public void take(Object object) { ... } }
+
+Use any blocking approach you like.
