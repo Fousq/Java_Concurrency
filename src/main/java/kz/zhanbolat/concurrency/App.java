@@ -6,7 +6,7 @@ package kz.zhanbolat.concurrency;
 public class App {
 
     public static void main(String[] args) {
-        ThreadMap map = new ThreadMap();
+        ThreadMap map = new ThreadSafeMap();
         NumberAdder adder = new NumberAdder(map);
         Summarizer summarizer = new Summarizer(map);
         Thread adderThread = new Thread(adder);

@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 public class Summarizer implements Runnable {
     private static final Logger logger = LogManager.getLogger(Summarizer.class);
@@ -16,10 +17,12 @@ public class Summarizer implements Runnable {
     @Override
     public void run() {
         while (true) {
-            Collection<Integer> values = threadMap.values();
+            Iterator<Integer> values = threadMap.values().iterator();
             Integer sum = 0;
-            for (Integer value : values) {
-                sum = value;
+            synchronized (values) {
+                while (values.hasNext()) {
+                    sum += values.next();
+                }
             }
             logger.info("Summery: " + sum);
         }

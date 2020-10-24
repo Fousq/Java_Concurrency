@@ -3,6 +3,8 @@ package kz.zhanbolat.concurrency;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.concurrent.TimeUnit;
+
 public class NumberAdder implements Runnable {
     private static final Logger logger = LogManager.getLogger(NumberAdder.class);
     private ThreadMap threadMap;
@@ -18,6 +20,11 @@ public class NumberAdder implements Runnable {
         while (true) {
             Integer number = generateNextNumber();
             threadMap.put(number, number);
+            try {
+                TimeUnit.MILLISECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                logger.error(e);
+            }
         }
     }
 
