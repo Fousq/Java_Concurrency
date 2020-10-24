@@ -1,28 +1,18 @@
 package kz.zhanbolat.concurrency;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class ThreadMap {
-    private Map<Integer, Integer> numberMap;
+    private ConcurrentMap<Integer, Integer> numberMap;
 
     public ThreadMap() {
-        numberMap = new HashMap<>();
+        numberMap = new ConcurrentHashMap<>();
     }
 
     public void put(Integer key, Integer value) {
         numberMap.put(key, value);
-    }
-
-    public Integer get(Integer key) {
-        return numberMap.get(key);
-    }
-
-    public Set<Integer> keys() {
-        return numberMap.keySet();
-    }
-
-    public Set<Map.Entry<Integer, Integer>> entrySet() {
-        return numberMap.entrySet();
     }
 
     public Collection<Integer> values() {
