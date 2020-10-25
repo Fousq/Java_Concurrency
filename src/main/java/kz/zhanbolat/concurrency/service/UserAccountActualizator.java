@@ -8,11 +8,9 @@ import kz.zhanbolat.concurrency.exception.FailedLoadUserAccountException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserAccountActualizator implements Runnable {
     private static final Logger logger = LogManager.getLogger(UserAccountActualizator.class);

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kz.zhanbolat.concurrency.entity.ExchangeRate;
 import kz.zhanbolat.concurrency.entity.ExchangeRateList;
 import kz.zhanbolat.concurrency.repository.ExchangeRateRepository;
-import kz.zhanbolat.concurrency.util.YamlFileLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
