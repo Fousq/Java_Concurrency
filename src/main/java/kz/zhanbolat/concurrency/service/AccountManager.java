@@ -1,12 +1,10 @@
 package kz.zhanbolat.concurrency.service;
 
 import kz.zhanbolat.concurrency.entity.UserAccount;
-
-import java.io.File;
-import java.util.List;
+import kz.zhanbolat.concurrency.exception.FailedLoadUserAccountException;
 
 public interface AccountManager {
-    void loadAccounts(File accountsDirectory);
-    List<UserAccount> getUserAccounts();
-    void updateAccounts(List<UserAccount> userAccounts);
+    void loadAccount() throws FailedLoadUserAccountException;
+    UserAccount getUserAccount();
+    void updateAccount(UserAccount updatedUserAccount);
 }

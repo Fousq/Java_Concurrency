@@ -1,46 +1,42 @@
 package kz.zhanbolat.concurrency.service.impl;
 
 import kz.zhanbolat.concurrency.entity.UserAccount;
+import kz.zhanbolat.concurrency.exception.FailedLoadUserAccountException;
 import kz.zhanbolat.concurrency.repository.UserAccountRepository;
 import kz.zhanbolat.concurrency.service.AccountManager;
-import kz.zhanbolat.concurrency.util.YamlFileLoader;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Optional;
 
 public class AccountManagerImpl implements AccountManager {
-    private ConcurrentMap<String, UserAccount> userAccountsMap;
-    private UserAccountRepository userAccountRepository;
+    private final File userAccountFile;
+    private UserAccount userAccount;
+    private final UserAccountRepository userAccountRepository;
 
-    public AccountManagerImpl(UserAccountRepository userAccountRepository) {
-        userAccountsMap = new ConcurrentHashMap<>();
+    public AccountManagerImpl(File userAccountFile, UserAccountRepository userAccountRepository) {
+        this.userAccountFile = userAccountFile;
         this.userAccountRepository = userAccountRepository;
     }
 
     @Override
-    public void loadAccounts(File accountDirectory) {
-        YamlFileLoader.loadYamlFiles(accountDirectory.getPath())
-                .forEach(file -> userAccountRepository.getUserAccount(file)
-                        .ifPresent(account -> userAccountsMap.put(file.getPath(), account)));
+    public void loadAccount() throws FailedLoadUserAccountException {
+        if (userAccountFile.isDirectory()) {
+            throw new IllegalArgumentException("User account should be a file");
+        }
+        Optional<UserAccount> loadedUserAccount = userAccountRepository.getUserAccount(userAccountFile);
+        if (!loadedUserAccount.isPresent()) {
+            throw new FailedLoadUserAccountException("Failed to load user account from file " + userAccountFile.getPath());
+        }
+        userAccount = loadedUserAccount.get();
     }
 
     @Override
-    public List<UserAccount> getUserAccounts() {
-        return new ArrayList<>(userAccountsMap.values());
+    public UserAccount getUserAccount() {
+        return userAccount;
     }
 
     @Override
-    public void updateAccounts(List<UserAccount> userAccounts) {
-        userAccountsMap.forEach((path, storedUserAccount) -> {
-            for (UserAccount userAccount : userAccounts) {
-                if (userAccount.getId() == storedUserAccount.getId()) {
-                    userAccountRepository.updateUserAccount(new File(path), userAccount);
-                    break;
-                }
-            }
-        });
+    public void updateAccount(UserAccount updatedUserAccount) {
+        userAccountRepository.updateUserAccount(userAccountFile, updatedUserAccount);
     }
 }
