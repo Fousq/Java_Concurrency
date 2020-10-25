@@ -4,18 +4,22 @@
 package kz.zhanbolat.concurrency;
 
 import kz.zhanbolat.concurrency.entity.UserAccount;
+import kz.zhanbolat.concurrency.repository.ObjectMapperFactory;
+import kz.zhanbolat.concurrency.repository.UserAccountRepository;
+import kz.zhanbolat.concurrency.repository.UserAccountRepositoryImpl;
 import kz.zhanbolat.concurrency.service.AccountManager;
+import kz.zhanbolat.concurrency.service.AccountManagerImpl;
 
 import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 public class App {
 
-    public static void main(String[] args) throws IOException {
-        AccountManager accountManager = new AccountManager();
+    public static void main(String[] args) {
+        UserAccountRepository userAccountRepository = new UserAccountRepositoryImpl(ObjectMapperFactory.INSTANCE.createYmlObjectMapper());
+        AccountManager accountManager = new AccountManagerImpl(userAccountRepository);
         accountManager.loadAccounts(new File("src/main/resources/accounts"));
         List<UserAccount> userAccounts = new ArrayList<>(accountManager.getUserAccounts());
         userAccounts.get(0).getCurrencies().get(0).getExchangeCurrencies().get(0).setAmount(BigDecimal.TEN);
