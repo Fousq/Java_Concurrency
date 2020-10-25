@@ -20,10 +20,9 @@ public class AccountManagerImpl implements AccountManager {
     }
 
     public void loadAccounts(File accountDirectory) {
-        List<File> fileList = YamlFileLoader.loadYamlFiles(accountDirectory.getPath());
-
-        fileList.forEach(file -> userAccountRepository.getUserAccount(file)
-                .ifPresent(account -> userAccountsMap.put(file.getPath(), account)));
+        YamlFileLoader.loadYamlFiles(accountDirectory.getPath())
+                .forEach(file -> userAccountRepository.getUserAccount(file)
+                        .ifPresent(account -> userAccountsMap.put(file.getPath(), account)));
     }
 
     public List<UserAccount> getUserAccounts() {
