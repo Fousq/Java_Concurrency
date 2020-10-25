@@ -1,29 +1,24 @@
-package kz.zhanbolat.concurrency.repository;
+package kz.zhanbolat.concurrency.repository.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kz.zhanbolat.concurrency.entity.UserAccount;
+import kz.zhanbolat.concurrency.repository.UserAccountRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Optional;
 
-public class UserAccountRepositoryImpl implements UserAccountRepository {
+public class UserAccountRepositoryImpl extends AbstractRepository implements UserAccountRepository {
     private static final Logger logger = LogManager.getLogger(UserAccountRepositoryImpl.class);
-    private ObjectMapper objectMapper;
 
     public UserAccountRepositoryImpl(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+        super(objectMapper);
     }
 
     public Optional<UserAccount> getUserAccount(File file) {
-        Objects.requireNonNull(file);
-        if (file.isDirectory()) {
-            throw new IllegalArgumentException("Cannot read values from the directory. " +
-                    "The file should be passed as input parameter.");
-        }
+        checkParameters(file);
         try {
             return Optional.of(objectMapper.readValue(file, UserAccount.class));
         } catch (IOException e) {

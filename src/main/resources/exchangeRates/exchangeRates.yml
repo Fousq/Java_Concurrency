@@ -1,0 +1,4 @@
+exchangeRates:
+  - from: "USD"
+    to: "EUR"
+    value: 0.84

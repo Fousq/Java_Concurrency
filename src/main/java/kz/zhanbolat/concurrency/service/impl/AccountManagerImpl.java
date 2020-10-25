@@ -1,7 +1,8 @@
-package kz.zhanbolat.concurrency.service;
+package kz.zhanbolat.concurrency.service.impl;
 
 import kz.zhanbolat.concurrency.entity.UserAccount;
 import kz.zhanbolat.concurrency.repository.UserAccountRepository;
+import kz.zhanbolat.concurrency.service.AccountManager;
 import kz.zhanbolat.concurrency.util.YamlFileLoader;
 
 import java.io.File;
@@ -19,16 +20,19 @@ public class AccountManagerImpl implements AccountManager {
         this.userAccountRepository = userAccountRepository;
     }
 
+    @Override
     public void loadAccounts(File accountDirectory) {
         YamlFileLoader.loadYamlFiles(accountDirectory.getPath())
                 .forEach(file -> userAccountRepository.getUserAccount(file)
                         .ifPresent(account -> userAccountsMap.put(file.getPath(), account)));
     }
 
+    @Override
     public List<UserAccount> getUserAccounts() {
         return new ArrayList<>(userAccountsMap.values());
     }
 
+    @Override
     public void updateAccounts(List<UserAccount> userAccounts) {
         userAccountsMap.forEach((path, storedUserAccount) -> {
             for (UserAccount userAccount : userAccounts) {
