@@ -11,6 +11,9 @@ public class YamlFileLoader {
 
     public static List<File> loadYamlFiles(String path) {
         File directory = new File(path);
+        if (!directory.exists()) {
+            throw new IllegalArgumentException("The directory doesn't exist");
+        }
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException("To load files, the path of directory should be passed as input parameter.");
         }

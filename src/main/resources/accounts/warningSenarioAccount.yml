@@ -1,0 +1,9 @@
+id: 2
+currencies:
+- name: "USD"
+  amount: 100
+  exchangeCurrencies:
+  - name: "RUB"
+    amount: 120
+    warning: "No such exchange rate presented"
+    exchangeDateTime: "2020-10-25 21:22:15"

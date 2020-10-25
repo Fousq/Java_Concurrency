@@ -4,6 +4,6 @@ currencies:
   amount: 100
   exchangeCurrencies:
   - name: "EUR"
-    amount: 10
+    amount: 120
     warning: ""
-    exchangeDateTime: "2020-10-24 14:46:00"
+    exchangeDateTime: "2020-10-25 21:25:38"

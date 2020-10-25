@@ -23,14 +23,12 @@ public class ExchangeRateRepositoryImpl extends AbstractRepository implements Ex
     @Override
     public List<ExchangeRate> getExchangeRates(File file) {
         List<ExchangeRate> exchangeRates = new ArrayList<>();
-        YamlFileLoader.loadYamlFiles(file.getPath()).forEach(loadedFile -> {
-            checkParameters(loadedFile);
-            try {
-                exchangeRates.addAll(objectMapper.readValue(loadedFile, ExchangeRateList.class).getExchangeRates());
-            } catch (IOException e) {
-                logger.error("Failed to read file " + loadedFile.getPath() + ". Caused by " + e);
-            }
-        });
+        checkParameters(file);
+        try {
+            exchangeRates.addAll(objectMapper.readValue(file, ExchangeRateList.class).getExchangeRates());
+        } catch (IOException e) {
+            logger.error("Failed to read file " + file.getPath() + ". Caused by " + e);
+        }
         return exchangeRates;
     }
 }
