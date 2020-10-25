@@ -3,12 +3,22 @@
  */
 package kz.zhanbolat.concurrency;
 
-public class App {
-    public String getGreeting() {
-        return "Hello world.";
-    }
+import kz.zhanbolat.concurrency.entity.UserAccount;
+import kz.zhanbolat.concurrency.service.AccountManager;
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+public class App {
+
+    public static void main(String[] args) throws IOException {
+        AccountManager accountManager = new AccountManager();
+        accountManager.loadAccounts(new File("src/main/resources/accounts"));
+        List<UserAccount> userAccounts = new ArrayList<>(accountManager.getUserAccounts());
+        userAccounts.get(0).getCurrencies().get(0).getExchangeCurrencies().get(0).setAmount(BigDecimal.TEN);
+        accountManager.updateAccounts(userAccounts);
     }
 }

@@ -1,0 +1,9 @@
+id: 1
+currencies:
+- name: "USD"
+  amount: 100
+  exchangeCurrencies:
+  - name: "EUR"
+    amount: 10
+    warning: ""
+    exchangeDateTime: "2020-10-24 14:46:00"
