@@ -28,8 +28,7 @@ public class NumberConsumer implements Runnable {
                  number = storage.pop();
             }
             numbers.add(number);
-            double average = 0;
-            average = (double) numbers.stream().reduce(0, Integer::sum) / numbers.size();
+            double average = (double) numbers.stream().reduce(0, Integer::sum) / numbers.size();
 
             logger.info("Average of total: " + average);
             if (SIZE <= numbers.size()) {
