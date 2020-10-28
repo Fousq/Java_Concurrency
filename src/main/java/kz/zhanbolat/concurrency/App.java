@@ -10,7 +10,7 @@ import kz.zhanbolat.concurrency.repository.impl.ExchangeRateRepositoryImpl;
 import kz.zhanbolat.concurrency.repository.impl.UserAccountRepositoryImpl;
 import kz.zhanbolat.concurrency.service.AccountManager;
 import kz.zhanbolat.concurrency.service.ExchangeRateManager;
-import kz.zhanbolat.concurrency.service.UserAccountActualizator;
+import kz.zhanbolat.concurrency.service.UserAccountActualizer;
 import kz.zhanbolat.concurrency.service.impl.AccountManagerImpl;
 import kz.zhanbolat.concurrency.service.impl.ExchangeRateManagerImpl;
 import kz.zhanbolat.concurrency.util.YamlFileLoader;
@@ -28,14 +28,14 @@ public class App {
         ExchangeRateRepository exchangeRateRepository = new ExchangeRateRepositoryImpl(ObjectMapperFactory.INSTANCE.createYmlObjectMapper());
         UserAccountRepository userAccountRepository = new UserAccountRepositoryImpl(ObjectMapperFactory.INSTANCE.createYmlObjectMapper());
         ExchangeRateManager exchangeRateManager = new ExchangeRateManagerImpl("src/main/resources/exchangeRates/exchangeRates.yml", exchangeRateRepository);
-        List<UserAccountActualizator> actualizators = new ArrayList<>();
+        List<UserAccountActualizer> actualizers = new ArrayList<>();
         // load user accounts
         for (File loadYamlFile : YamlFileLoader.loadYamlFiles("src/main/resources/accounts")) {
             AccountManager accountManager = new AccountManagerImpl(loadYamlFile, userAccountRepository);
-            actualizators.add(new UserAccountActualizator(accountManager, exchangeRateManager));
+            actualizers.add(new UserAccountActualizer(accountManager, exchangeRateManager));
         }
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
-        actualizators.forEach(actualizator -> executorService.schedule(actualizator, 1, TimeUnit.SECONDS));
+        actualizers.forEach(actualizer -> executorService.schedule(actualizer, 1, TimeUnit.SECONDS));
         executorService.shutdown();
     }
 }

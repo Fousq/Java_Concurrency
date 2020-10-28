@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserAccountActualizator implements Runnable {
-    private static final Logger logger = LogManager.getLogger(UserAccountActualizator.class);
+public class UserAccountActualizer implements Runnable {
+    private static final Logger logger = LogManager.getLogger(UserAccountActualizer.class);
     private final AccountManager accountManager;
     private final ExchangeRateManager exchangeRateManager;
 
-    public UserAccountActualizator(AccountManager accountManager, ExchangeRateManager exchangeRateManager) {
+    public UserAccountActualizer(AccountManager accountManager, ExchangeRateManager exchangeRateManager) {
         this.accountManager = accountManager;
         this.exchangeRateManager = exchangeRateManager;
     }
