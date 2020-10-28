@@ -1,4 +1,4 @@
-package kz.zhanbolat.concurrency.classic;
+package kz.zhanbolat.concurrency.concurrent;
 
 import kz.zhanbolat.concurrency.OperationPerSecondRegistry;
 

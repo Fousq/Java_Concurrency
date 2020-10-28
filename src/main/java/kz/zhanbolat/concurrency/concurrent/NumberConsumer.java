@@ -1,4 +1,4 @@
-package kz.zhanbolat.concurrency.classic;
+package kz.zhanbolat.concurrency.concurrent;
 
 import kz.zhanbolat.concurrency.OperationPerSecondRegistry;
 import org.apache.logging.log4j.LogManager;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NumberConsumer implements Runnable {
-    private static final Logger logger = LogManager.getLogger(NumberConsumer.class);
+    private static final Logger logger = LogManager.getLogger(kz.zhanbolat.concurrency.classic.NumberConsumer.class);
     private static final int SIZE = 10;
     private OperationPerSecondRegistry registry;
     private List<Integer> numbers;
@@ -24,13 +24,14 @@ public class NumberConsumer implements Runnable {
     public void run() {
         while(true) {
             Integer number;
-            synchronized (storage) {
-                 number = storage.pop();
+            try {
+                number = storage.pop();
+            } catch (InterruptedException e) {
+                logger.error(e);
+                continue;
             }
             numbers.add(number);
-            double average = 0;
-            average = (double) numbers.stream().reduce(0, Integer::sum) / numbers.size();
-
+            double average = (double) numbers.stream().reduce(0, Integer::sum) / numbers.size();
             logger.info("Average of total: " + average);
             if (SIZE <= numbers.size()) {
                 numbers = new ArrayList<>(SIZE);

@@ -1,4 +1,4 @@
-package kz.zhanbolat.concurrency.classic;
+package kz.zhanbolat.concurrency;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
