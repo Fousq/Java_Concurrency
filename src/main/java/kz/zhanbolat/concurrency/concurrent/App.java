@@ -8,9 +8,10 @@ import java.util.concurrent.Executors;
 public class App {
 
     public static void main(String[] args) {
-        NumberStorage storage = new NumberStorage();
         OperationPerSecondRegistry registry = new OperationPerSecondRegistry();
+        Runtime.getRuntime().addShutdownHook(registry);
 
+        NumberStorage storage = new NumberStorage();
         NumberProducer producer = new NumberProducer(registry, storage);
         NumberConsumer consumer = new NumberConsumer(registry, storage);
 
@@ -19,6 +20,6 @@ public class App {
         executorService.execute(producer);
         executorService.execute(consumer);
 
-        Runtime.getRuntime().addShutdownHook(registry);
+        executorService.shutdown();
     }
 }

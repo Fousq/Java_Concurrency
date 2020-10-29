@@ -20,7 +20,7 @@ public class NumberProducer implements Runnable {
 
     @Override
     public void run() {
-        while(true) {
+        while(registry.isRunnable()) {
             int number = random.nextInt();
             try {
                 storage.add(number);

@@ -22,7 +22,7 @@ public class NumberConsumer implements Runnable {
 
     @Override
     public void run() {
-        while(true) {
+        while(registry.isRunnable()) {
             Integer number;
             try {
                 number = storage.pop();
