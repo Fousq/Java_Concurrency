@@ -3,12 +3,39 @@
  */
 package kz.zhanbolat.concurrency;
 
+import kz.zhanbolat.concurrency.repository.ExchangeRateRepository;
+import kz.zhanbolat.concurrency.repository.ObjectMapperFactory;
+import kz.zhanbolat.concurrency.repository.UserAccountRepository;
+import kz.zhanbolat.concurrency.repository.impl.ExchangeRateRepositoryImpl;
+import kz.zhanbolat.concurrency.repository.impl.UserAccountRepositoryImpl;
+import kz.zhanbolat.concurrency.service.AccountManager;
+import kz.zhanbolat.concurrency.service.ExchangeRateManager;
+import kz.zhanbolat.concurrency.service.UserAccountActualizer;
+import kz.zhanbolat.concurrency.service.impl.AccountManagerImpl;
+import kz.zhanbolat.concurrency.service.impl.ExchangeRateManagerImpl;
+import kz.zhanbolat.concurrency.util.YamlFileLoader;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class App {
-    public String getGreeting() {
-        return "Hello world.";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        ExchangeRateRepository exchangeRateRepository = new ExchangeRateRepositoryImpl(ObjectMapperFactory.INSTANCE.createYmlObjectMapper());
+        UserAccountRepository userAccountRepository = new UserAccountRepositoryImpl(ObjectMapperFactory.INSTANCE.createYmlObjectMapper());
+        ExchangeRateManager exchangeRateManager = new ExchangeRateManagerImpl("src/main/resources/exchangeRates/exchangeRates.yml", exchangeRateRepository);
+        List<UserAccountActualizer> actualizers = new ArrayList<>();
+        // load user accounts
+        for (File loadYamlFile : YamlFileLoader.loadYamlFiles("src/main/resources/accounts")) {
+            AccountManager accountManager = new AccountManagerImpl(loadYamlFile, userAccountRepository);
+            actualizers.add(new UserAccountActualizer(accountManager, exchangeRateManager));
+        }
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
+        actualizers.forEach(actualizer -> executorService.schedule(actualizer, 1, TimeUnit.SECONDS));
+        executorService.shutdown();
     }
 }
